@@ -68,7 +68,9 @@ class AuthenticatedUserDataMapper {
   }
 }
 
-const authenticationService = new SupabaseAuthenticationService(secret("SUPABASE_URL")(), secret("SUPABASE_KEY")());
+const supabaseUrl = secret("SUPABASE_URL")();
+const supabaseKey = secret("SUPABASE_KEY")();
+const authenticationService = new SupabaseAuthenticationService(supabaseUrl, supabaseKey);
 
 /**
  * Supabase authentication handler for Encore.
