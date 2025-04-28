@@ -23,7 +23,7 @@ export default function GeoGebraApplet({ appletId, xmlFilePath }: GeoGebraApplet
         const params = {
           id: appletId,
           appName: "notes",
-          width: 1000,
+          width: 950,
           height: 600,
           showToolBar: true,
           showAlgebraInput: true,
