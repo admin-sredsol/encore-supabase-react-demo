@@ -68,8 +68,11 @@ class AuthenticatedUserDataMapper {
   }
 }
 
-const supabaseUrl = secret("SUPABASE_URL")();
-const supabaseKey = secret("SUPABASE_KEY")();
+import * as dotenv from "dotenv";
+dotenv.config();
+
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
 const authenticationService = new SupabaseAuthenticationService(supabaseUrl, supabaseKey);
 
 /**

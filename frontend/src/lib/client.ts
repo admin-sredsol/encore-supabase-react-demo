@@ -31,6 +31,7 @@ export function PreviewEnv(pr: number | string): BaseURL {
  */
 export default class Client {
     public readonly admin: admin.ServiceClient
+    public readonly chat: chat.ServiceClient;
 
 
     /**
@@ -42,6 +43,7 @@ export default class Client {
     constructor(target: BaseURL, options?: ClientOptions) {
         const base = new BaseClient(target, options ?? {})
         this.admin = new admin.ServiceClient(base)
+        this.chat = new chat.ServiceClient(base)
     }
 }
 
@@ -101,7 +103,41 @@ export namespace auth {
     }
 }
 
-
+export namespace chat {
+    export interface ChatMessage {
+      userID: string;
+      username: string;
+      msg: string;
+    }
+  
+    export interface HandshakeRequest {
+      id: string;
+    }
+  
+    export interface PostMessage {
+      username: string;
+      msg: string;
+    }
+  
+    export class ServiceClient {
+      private baseClient: BaseClient;
+  
+      constructor(baseClient: BaseClient) {
+        this.baseClient = baseClient;
+      }
+  
+      public async chat(
+        params: HandshakeRequest,
+      ): Promise<StreamInOut<PostMessage, ChatMessage>> {
+        // Convert our params into the objects we need for the request
+        const query = makeRecord<string, string | string[]>({
+          id: params.id,
+        });
+  
+        return await this.baseClient.createStreamInOut(`/chat`, { query });
+      }
+    }
+  }
 
 function encodeQuery(parts: Record<string, string | string[]>): string {
     const pairs: string[] = []
